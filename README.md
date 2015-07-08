@@ -6,4 +6,6 @@
 5. 然後就可以用chrome 跑自動測試了!
 6. 可以開始寫 JS 了!!
 
-There is a good tutorial [here] (http://simpleprogrammer.com/2014/02/03/selenium-with-node-js/)
+### Reference doc
+- There is a good tutorial [here] (http://simpleprogrammer.com/2014/02/03/selenium-with-node-js/)
+- Google Selenium [API] (http://selenium.googlecode.com/git/docs/api/javascript/index.html) and [here](https://code.google.com/p/selenium/wiki/WebDriverJs)
