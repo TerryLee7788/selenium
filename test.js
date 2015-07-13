@@ -54,7 +54,7 @@ function check_title () {
 var assert = require('assert'),
     test = require('selenium-webdriver/testing'),
     webdriver = require('selenium-webdriver'),
-    chrome = require('selenium-webdriver/chrome'),
+    // chrome = require('selenium-webdriver/chrome'),
     By = webdriver.By,
     Key = webdriver.Key,
     until = webdriver.until;
@@ -141,7 +141,7 @@ describe('Google Search', function() {
   
 });
 
-/* test mobile things
+/*
 test.describe('Yahoo', function() {
   test.it('should work', function() {
   //it('should work', function() {
