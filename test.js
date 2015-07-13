@@ -1,4 +1,12 @@
 /*
+ * Reference doc
+ * https://code.google.com/p/selenium/wiki/WebDriverJs#Getting_Started
+ * https://selenium.googlecode.com/git/docs/api/java/org/openqa/selenium/WebDriver.html
+ * http://code.tutsplus.com/tutorials/an-introduction-to-webdriver-using-the-javascript-bindings--cms-21855
+ * http://stackoverflow.com/questions/19914915/how-to-make-protractor-press-the-enter-key
+ */
+
+/*
  * use node test.js
  */
 
@@ -46,25 +54,64 @@ function check_title () {
 var assert = require('assert'),
     test = require('selenium-webdriver/testing'),
     webdriver = require('selenium-webdriver'),
+    chrome = require('selenium-webdriver/chrome'),
     By = webdriver.By,
+    Key = webdriver.Key,
     until = webdriver.until;
- 
-test.describe('Google Search', function() {
-  test.it('should work', function() {
+
+//test.describe('Google Search', function() {
+describe('Google Search', function() {
+  var url = 'http://www.google.com/',
+      driver, action;
+  
+  function checkTitle(title) {
+    console.log(title);
+    return until.titleContains('webdriver - Google');
+  }
+  //test.before(function () {
+  //before(function () {
+  beforeEach(function () {
+    console.log('"Google Search" before\n');
+    driver = new webdriver.Builder().
+              withCapabilities(webdriver.Capabilities.chrome()).
+              build();
+    action = new webdriver.ActionSequence(driver);
+  });
+
+  //after(function () {
+  afterEach(function () {
+    console.log('"Google Search" after\n');
+  });
+
+  test.it('first test, try to open google web', function() {
+  //it('Google Search => should work', function(done) {
+    console.log('hi, first');
+
+    /*
     var driver = new webdriver.Builder().
         withCapabilities(webdriver.Capabilities.chrome()).
         build();
-    
-    driver.get('http://www.google.com/ncr');
-    this.timeout(15000);
-    
-    /*
-    driver.findElement(By.name('q')).sendKeys('webdriver');
-    driver.findElement(By.name('btnK')).click();
-    driver.wait(until.titleIs('webdriver - Google Search'), 1000);
-    driver.wait(until.titleContains('webdriver - Google'), 5000);
     */
-    /*
+
+    driver.get(url);
+    
+    // specify the timeout on the test
+    // or you can just "mocha test.js --timeout 15000"
+    this.timeout(15000);
+
+    /* try to checking things */
+    //driver.findElement(By.name('q')).sendKeys('webdriver');
+    driver.findElement(By.name('q')).then(function (q) {
+      q.sendKeys('webdriver');
+    });
+    action.sendKeys(Key.ESCAPE).perform(); // error: not a modifier key
+    driver.findElement(By.name('btnK')).click();
+    //driver.findElement(By.className('sbqs_c')).click();
+    //driver.findElement(By.css('input[class="lsb"]')).click();
+    //driver.wait(until.titleIs('webdriver - Google Search'), 1000);
+    driver.wait(checkTitle, 5000);
+    
+    /* try to checking things
     var searchBox = driver.findElement(webdriver.By.name('q'));
     searchBox.sendKeys('simple programmer');
     searchBox.getAttribute('value').then(function(value) {
@@ -73,12 +120,33 @@ test.describe('Google Search', function() {
     driver.wait(until.titleContains('simple programmer'));
     */
     driver.quit();
-    
+
+    // asynchronous function
+    // done();
   });
+
+  //test.it('second test', function () {
+  it('second test', function () {
+    var name = 'Terry';
+
+    // use assert
+    assert.equal(name, 'Terry');
+
+    /*
+    driver.get(url);
+    this.timeout(15000);
+    
+    driver.quit();
+    */
+  });
+  
 });
 
+/*
 test.describe('Yahoo', function() {
   test.it('should work', function() {
+  //it('should work', function() {
+    
     var driver = new webdriver.Builder().
       withCapabilities(webdriver.Capabilities.chrome()).
       build();
@@ -89,3 +157,4 @@ test.describe('Yahoo', function() {
     
   });
 });
+*/
