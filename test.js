@@ -64,11 +64,10 @@ describe('Google Search', function() {
   var url = 'http://www.google.com/',
       driver, action;
   
-  function checkTitle(title) {
-    console.log(title);
+  function checkTitle() {
     return until.titleContains('webdriver - Google');
   }
-  //test.before(function () {
+  
   //before(function () {
   beforeEach(function () {
     console.log('"Google Search" before\n');
@@ -81,13 +80,14 @@ describe('Google Search', function() {
   //after(function () {
   afterEach(function () {
     console.log('"Google Search" after\n');
+    driver.quit();
   });
 
   test.it('first test, try to open google web', function() {
   //it('Google Search => should work', function(done) {
     console.log('hi, first');
 
-    /*
+    /* move to before / beforeEach fn
     var driver = new webdriver.Builder().
         withCapabilities(webdriver.Capabilities.chrome()).
         build();
@@ -119,7 +119,7 @@ describe('Google Search', function() {
     });
     driver.wait(until.titleContains('simple programmer'));
     */
-    driver.quit();
+    // driver.quit();
 
     // asynchronous function
     // done();
@@ -135,14 +135,13 @@ describe('Google Search', function() {
     /*
     driver.get(url);
     this.timeout(15000);
-    
     driver.quit();
     */
   });
   
 });
 
-/*
+/* test mobile things
 test.describe('Yahoo', function() {
   test.it('should work', function() {
   //it('should work', function() {
