@@ -60,6 +60,7 @@ var assert = require('assert'),
     webdriver = require('selenium-webdriver'),
     // chrome = require('selenium-webdriver/chrome'),
     By = webdriver.By,
+    EventEmitter = new webdriver.EventEmitter(),
     Key = webdriver.Key,
     until = webdriver.until;
 
@@ -76,7 +77,8 @@ test.describe('Google Search', function() {
   test.beforeEach(function () {
     console.log('"Google Search" start\n');
     driver = new webdriver.Builder().
-              withCapabilities(webdriver.Capabilities.chrome()).
+              // withCapabilities(webdriver.Capabilities.chrome()).
+              forBrowser('chrome').
               build();
     // action = new webdriver.ActionSequence(driver);
   });
@@ -87,11 +89,25 @@ test.describe('Google Search', function() {
   });
 
   test.it('Try to open google web', function() {
-    var js = 'return window.location.origin';
+    var js;
 
+    // based on node js "EventEmitter"
+    EventEmitter.on('load', function () {
+      console.log('loaded');
+    });
+
+    EventEmitter.emit('load');
+
+    // set full screen
+    driver.manage().window().maximize();
+    
+    // Go the "url" page
     driver.get(url);
+    
+    // Run my js code
+    js = 'return document.documentElement.clientWidth';
     driver.executeScript(js).then(function (val) {
-      console.log('use executeScript fn to get things: ' + val);
+      console.log('Current window width: ' + val + 'px');
     });
     // send "esc" key
     // action.sendKeys(Key.ESCAPE).perform();
@@ -105,7 +121,7 @@ test.describe('Google Search', function() {
     
     // The "click" means "mouse click"
     driver.findElement(By.name('btnK')).click();
-    driver.wait(until.titleContains('webdriver'), 5000, 'checking title end.').
+    driver.wait(until.titleContains('webdriver'), 5000, 'checking title end.');
     driver.getTitle().then(function (title) {
       console.log('title: ' + title);
     });
