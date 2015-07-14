@@ -4,6 +4,12 @@
  * https://selenium.googlecode.com/git/docs/api/java/org/openqa/selenium/WebDriver.html
  * http://code.tutsplus.com/tutorials/an-introduction-to-webdriver-using-the-javascript-bindings--cms-21855
  * http://stackoverflow.com/questions/19914915/how-to-make-protractor-press-the-enter-key
+ * 
+ * http://pcsupport.about.com/od/commandlinereference/a/redirect-command-output-to-file.htm
+ * "mocha test.js > log.txt"
+ * > Can create the file I specify is created if it doesn't already exist and is overwritten if it does exist.
+ * "mocha test.js >> log.txt
+ * > Two ">>" will appends the command output to the end of the file.
  */
 
 /*
@@ -42,13 +48,6 @@ function check_title () {
 
 /*
  * use mocha test.js
- * 
- * "mocha test.js > log.txt" 可以create 一個 "log.txt" 檔案紀錄, 重跑一次會overwrite "log.txt" 檔案
- * "mocha test.js >> log.txt" 兩個 ">>" 則是可以一直把記錄檔寫入進去 "log.txt" 檔案
- * 
- * 以後每個 test tasks 就是一個 test.describe('xxx', function () { ... }) 這樣
- * 假設有100 個tasks 就是 100個 describe... ?
- * 
  */
 
 var assert = require('assert'),
@@ -59,17 +58,23 @@ var assert = require('assert'),
     Key = webdriver.Key,
     until = webdriver.until;
 
-//test.describe('Google Search', function() {
-describe('Google Search', function() {
+test.describe('Google Search', function() {
   var url = 'http://www.google.com/',
       driver, action;
   
+  /* 
+   * specify the timeout on the test
+   * or you can just "mocha test.js --timeout 15000"
+   */
+  this.timeout(15000);
+
+  // In the test scope functions
   function checkTitle() {
     return until.titleContains('webdriver - Google');
   }
   
   //before(function () {
-  beforeEach(function () {
+  test.beforeEach(function () {
     console.log('"Google Search" before\n');
     driver = new webdriver.Builder().
               withCapabilities(webdriver.Capabilities.chrome()).
@@ -78,7 +83,7 @@ describe('Google Search', function() {
   });
 
   //after(function () {
-  afterEach(function () {
+  test.afterEach(function () {
     console.log('"Google Search" after\n');
     driver.quit();
   });
@@ -95,20 +100,16 @@ describe('Google Search', function() {
 
     driver.get(url);
     
-    // specify the timeout on the test
-    // or you can just "mocha test.js --timeout 15000"
-    this.timeout(15000);
-
-    /* try to checking things */
-    //driver.findElement(By.name('q')).sendKeys('webdriver');
+    // try to checking things
     driver.findElement(By.name('q')).then(function (q) {
       q.sendKeys('webdriver');
     });
-    action.sendKeys(Key.ESCAPE).perform(); // error: not a modifier key
+
+    // send "esc" key
+    action.sendKeys(Key.ESCAPE).perform();
+
+    // The "click" means "mouse click"
     driver.findElement(By.name('btnK')).click();
-    //driver.findElement(By.className('sbqs_c')).click();
-    //driver.findElement(By.css('input[class="lsb"]')).click();
-    //driver.wait(until.titleIs('webdriver - Google Search'), 1000);
     driver.wait(checkTitle, 5000);
     
     /* try to checking things
@@ -119,7 +120,6 @@ describe('Google Search', function() {
     });
     driver.wait(until.titleContains('simple programmer'));
     */
-    // driver.quit();
 
     // asynchronous function
     // done();
@@ -140,20 +140,3 @@ describe('Google Search', function() {
   });
   
 });
-
-/*
-test.describe('Yahoo', function() {
-  test.it('should work', function() {
-  //it('should work', function() {
-    
-    var driver = new webdriver.Builder().
-      withCapabilities(webdriver.Capabilities.chrome()).
-      build();
-    
-    driver.get('http://Yahoo.com');
-    this.timeout(15000);
-    driver.quit();
-    
-  });
-});
-*/

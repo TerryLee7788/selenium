@@ -8,6 +8,9 @@
   },
   "author": "",
   "license": "ISC",
+  "scripts": {
+    "start": "mocha test.js"
+  },
   "dependencies": {
     "selenium-webdriver": "^2.46.1"
   }
