@@ -4,14 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "mocha test.js"
   },
   "author": "",
   "license": "ISC",
-  "scripts": {
-    "start": "mocha test.js"
-  },
   "dependencies": {
+    "archiver": "^0.14.4",
+    "chromedriver": "^2.16.0",
+    "mochawesome": "^1.2.0",
+    "nodemailer": "^1.4.0",
+    "nodemailer-smtp-transport": "^1.0.3",
     "selenium-webdriver": "^2.46.1"
-  }
+  },
+  "devDependencies": {}
 }
