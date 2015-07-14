@@ -86,41 +86,28 @@ test.describe('Google Search', function() {
   });
 
   test.it('Try to open google web', function() {
+    var js = 'return window.location.origin';
 
-    driver.get(url).
-      then(function() {
-        var js = 'return window.location.origin';
-        driver.executeScript(js).then(function (val) {
-          console.log('use executeScript fn to get things: ' + val)
-        });
-      }).
+    driver.get(url);
+    driver.executeScript(js).then(function (val) {
+      console.log('use executeScript fn to get things: ' + val);
+    });
+    // send "esc" key
+    // action.sendKeys(Key.ESCAPE).perform();
 
-      then(function () {
-        // send "esc" key
-        // action.sendKeys(Key.ESCAPE).perform();
+    // try to checking things
+    driver.findElement(By.name('q')).sendKeys(['webdriver' + Key.ESCAPE]);
+    var name = 'Terry';
 
-        // try to checking things
-        driver.findElement(By.name('q')).sendKeys(['webdriver' + Key.ESCAPE]);
-      }).
-
-      then(function () {
-        var name = 'Terry';
-
-        // use assert
-        assert.equal(name, 'Terry');
-        
-        // The "click" means "mouse click"
-        driver.findElement(By.name('btnK')).click().
-          then(function () {
-            driver.wait(until.titleContains('webdriver'), 5000, 'checking title end.').
-              then(function () {
-                driver.getTitle().then(function (title) {
-                  console.log('title: ' + title);
-                });
-              });
-          });
-      
-      });
+    // use assert
+    assert.equal(name, 'Terry');
+    
+    // The "click" means "mouse click"
+    driver.findElement(By.name('btnK')).click();
+    driver.wait(until.titleContains('webdriver'), 5000, 'checking title end.').
+    driver.getTitle().then(function (title) {
+      console.log('title: ' + title);
+    });
 
     // asynchronous function
     // done();
