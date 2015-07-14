@@ -1,5 +1,6 @@
 /*
  * Reference doc
+ * 
  * https://code.google.com/p/selenium/wiki/WebDriverJs#Getting_Started
  * https://selenium.googlecode.com/git/docs/api/java/org/openqa/selenium/WebDriver.html
  * http://code.tutsplus.com/tutorials/an-introduction-to-webdriver-using-the-javascript-bindings--cms-21855
