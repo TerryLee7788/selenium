@@ -4,7 +4,11 @@
  * https://selenium.googlecode.com/git/docs/api/java/org/openqa/selenium/WebDriver.html
  * http://code.tutsplus.com/tutorials/an-introduction-to-webdriver-using-the-javascript-bindings--cms-21855
  * http://stackoverflow.com/questions/19914915/how-to-make-protractor-press-the-enter-key
+ *
+ * Set browser window size
+ * http://stackoverflow.com/questions/20023567/how-to-set-default-browser-window-size-in-protractor-webdriverjs
  * 
+ * Log command output
  * http://pcsupport.about.com/od/commandlinereference/a/redirect-command-output-to-file.htm
  * "mocha test.js > log.txt"
  * > Can create the file I specify is created if it doesn't already exist and is overwritten if it does exist.
@@ -67,76 +71,58 @@ test.describe('Google Search', function() {
    * or you can just "mocha test.js --timeout 15000"
    */
   this.timeout(15000);
-
-  // In the test scope functions
-  function checkTitle() {
-    return until.titleContains('webdriver - Google');
-  }
   
-  //before(function () {
   test.beforeEach(function () {
-    console.log('"Google Search" before\n');
+    console.log('"Google Search" start\n');
     driver = new webdriver.Builder().
               withCapabilities(webdriver.Capabilities.chrome()).
               build();
-    action = new webdriver.ActionSequence(driver);
+    // action = new webdriver.ActionSequence(driver);
   });
 
-  //after(function () {
   test.afterEach(function () {
-    console.log('"Google Search" after\n');
+    console.log('"Google Search" end\n');
     driver.quit();
   });
 
-  test.it('first test, try to open google web', function() {
-  //it('Google Search => should work', function(done) {
-    console.log('hi, first');
+  test.it('Try to open google web', function() {
 
-    /* move to before / beforeEach fn
-    var driver = new webdriver.Builder().
-        withCapabilities(webdriver.Capabilities.chrome()).
-        build();
-    */
+    driver.get(url).
+      then(function() {
+        var js = 'return window.location.origin';
+        driver.executeScript(js).then(function (val) {
+          console.log('use executeScript fn to get things: ' + val)
+        });
+      }).
 
-    driver.get(url);
-    
-    // try to checking things
-    driver.findElement(By.name('q')).then(function (q) {
-      q.sendKeys('webdriver');
-    });
+      then(function () {
+        // send "esc" key
+        // action.sendKeys(Key.ESCAPE).perform();
 
-    // send "esc" key
-    action.sendKeys(Key.ESCAPE).perform();
+        // try to checking things
+        driver.findElement(By.name('q')).sendKeys(['webdriver' + Key.ESCAPE]);
+      }).
 
-    // The "click" means "mouse click"
-    driver.findElement(By.name('btnK')).click();
-    driver.wait(checkTitle, 5000);
-    
-    /* try to checking things
-    var searchBox = driver.findElement(webdriver.By.name('q'));
-    searchBox.sendKeys('simple programmer');
-    searchBox.getAttribute('value').then(function(value) {
-      assert.equal(value, 'simple programmer');
-    });
-    driver.wait(until.titleContains('simple programmer'));
-    */
+      then(function () {
+        var name = 'Terry';
+
+        // use assert
+        assert.equal(name, 'Terry');
+        
+        // The "click" means "mouse click"
+        driver.findElement(By.name('btnK')).click().
+          then(function () {
+            driver.wait(until.titleContains('webdriver'), 5000, 'checking title end.').
+              then(function () {
+                driver.getTitle().then(function (title) {
+                  console.log('title: ' + title);
+                });
+              });
+          });
+      
+      });
 
     // asynchronous function
     // done();
-  });
-
-  //test.it('second test', function () {
-  it('second test', function () {
-    var name = 'Terry';
-
-    // use assert
-    assert.equal(name, 'Terry');
-
-    /*
-    driver.get(url);
-    this.timeout(15000);
-    driver.quit();
-    */
-  });
-  
+  });  
 });
