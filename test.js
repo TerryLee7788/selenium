@@ -2,7 +2,7 @@
  * Reference doc
  * 
  * https://code.google.com/p/selenium/wiki/WebDriverJs#Getting_Started
- * https://selenium.googlecode.com/git/docs/api/java/org/openqa/selenium/WebDriver.html
+ * https://selenium.googlecode.com/git/docs/api/javascript/module_selenium-webdriver.html
  * http://code.tutsplus.com/tutorials/an-introduction-to-webdriver-using-the-javascript-bindings--cms-21855
  * http://stackoverflow.com/questions/19914915/how-to-make-protractor-press-the-enter-key
  *
@@ -59,23 +59,59 @@ var assert = require('assert'),
     test = require('selenium-webdriver/testing'),
     webdriver = require('selenium-webdriver'),
     // chrome = require('selenium-webdriver/chrome'),
+    fs = require('fs'),
     By = webdriver.By,
     EventEmitter = new webdriver.EventEmitter(),
     Key = webdriver.Key,
     until = webdriver.until;
 
+// fs => based on node js "File System" module
+fs.readFile(__dirname + '/package.json', 'utf8', function (err, file) {
+  if(!err) {
+    console.log(JSON.parse(file).name);
+  }
+});
+
 test.describe('Google Search', function() {
   var url = 'http://www.google.com/',
-      driver, action;
+      driver, action,
   
+  tryAsyn = function (done) {
+    var timer = 10000,
+        second = (timer / 1000);
+    console.log('"Google Search" test will start after ' + second + ((second >= 10) ? (' seconds') : (' second')) );
+    /****
+     * 
+     * To make a test asynchronous,
+     * the test function should accept a callback function.
+     * Also, The "done" callback function also accepts an error as the first argument,
+     * which means that instead of throwing an error.
+     * 
+     * Example: 
+     *
+     *   it('Test something', function (done) {
+     *     doSomethingAsyn(function (err) {
+     *       done(err);
+     *     });
+     *   });
+     * 
+     ****/
+    
+    // if a function is asyn, simply accept a callback argument
+    setTimeout(done, timer);
+    // Test will started after 10s
+  },
+  checkTitle = function (title) {
+    return until.titleContains(title);
+  };
+
   /* 
    * specify the timeout on the test
-   * or you can just "mocha test.js --timeout 15000"
+   * or you can just ("mocha test.js --timeout 15000" / "mocha test.js -t 15000")
    */
   this.timeout(15000);
   
-  test.beforeEach(function () {
-    console.log('"Google Search" start\n');
+  test.before(function () {
     driver = new webdriver.Builder().
               // withCapabilities(webdriver.Capabilities.chrome()).
               forBrowser('chrome').
@@ -83,9 +119,14 @@ test.describe('Google Search', function() {
     // action = new webdriver.ActionSequence(driver);
   });
 
+  test.after(function () {
+    driver.quit();    
+  });
+
+  test.beforeEach(tryAsyn);
+
   test.afterEach(function () {
-    console.log('"Google Search" end\n');
-    driver.quit();
+    console.log('"Google Search" test end');
   });
 
   test.it('Try to open google web', function() {
@@ -96,6 +137,7 @@ test.describe('Google Search', function() {
       console.log('loaded');
     });
 
+    // trigger the load event
     EventEmitter.emit('load');
 
     // set full screen
@@ -116,17 +158,15 @@ test.describe('Google Search', function() {
     driver.findElement(By.name('q')).sendKeys(['webdriver' + Key.ESCAPE]);
     var name = 'Terry';
 
-    // use assert
-    assert.equal(name, 'Terry');
+    // use assert, change the assert message
+    assert.equal(name, 'Terry', 'this name is not equal to "Terry"');
     
     // The "click" means "mouse click"
     driver.findElement(By.name('btnK')).click();
-    driver.wait(until.titleContains('webdriver'), 5000, 'checking title end.');
+    driver.wait(checkTitle('webdriver'), 5000, 'checking title end.');
     driver.getTitle().then(function (title) {
-      console.log('title: ' + title);
+      console.log('Current page title: ' + title);
     });
 
-    // asynchronous function
-    // done();
   });  
 });
