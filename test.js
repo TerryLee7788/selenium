@@ -55,15 +55,7 @@ function check_title () {
  * use mocha test.js
  */
 
-var assert = require('assert'),
-    test = require('selenium-webdriver/testing'),
-    webdriver = require('selenium-webdriver'),
-    // chrome = require('selenium-webdriver/chrome'),
-    fs = require('fs'),
-    By = webdriver.By,
-    EventEmitter = new webdriver.EventEmitter(),
-    Key = webdriver.Key,
-    until = webdriver.until;
+var lib_list = require('./lib/basic_require').lib(global);
 
 // fs => based on node js "File System" module
 fs.readFile(__dirname + '/package.json', 'utf8', function (err, file) {
