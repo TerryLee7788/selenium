@@ -55,7 +55,7 @@ function check_title () {
  * use mocha test.js
  */
 
-var lib_list = require('./lib/basic_require').lib(global);
+var lib_list = require('./lib/basic_libs').lib(global);
 
 // fs => based on node js "File System" module
 fs.readFile(__dirname + '/package.json', 'utf8', function (err, file) {
