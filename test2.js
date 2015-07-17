@@ -22,12 +22,16 @@
  */
 
 /*******
- * setting modules from "basic_require" module for this case
+ * setting modules from "basic_libs" module for this case
  * "global" object is node.js global environment, (just like "window" object in the browser)
- *
  *******/
 
 var lib_list = require('./lib/basic_libs').lib(global);
+
+// https://nodejs.org/api/process.html
+process.argv.forEach(function (val, index, array) {
+  console.log(index + ': ' + val);
+});
 
 // fs => based on node js "File System" module
 fs.readFile(__dirname + '/package.json', 'utf8', function (err, file) {
@@ -81,7 +85,7 @@ test.describe('Google Search - Test Tasks', function() {
    * specify the timeout on the test
    * or you can just ("mocha test.js --timeout 15000" / "mocha test.js -t 15000")
    */
-  this.timeout(15000);
+  this.timeout(current_timer);
 
   test.beforeEach(tryAsyn);
 

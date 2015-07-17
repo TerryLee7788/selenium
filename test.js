@@ -101,7 +101,7 @@ test.describe('Google Search', function() {
    * specify the timeout on the test
    * or you can just ("mocha test.js --timeout 15000" / "mocha test.js -t 15000")
    */
-  this.timeout(15000);
+  this.timeout(current_timer);
   
   test.before(function () {
     driver = new webdriver.Builder().
