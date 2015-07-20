@@ -17,5 +17,9 @@
     "nodemailer-smtp-transport": "^1.0.3",
     "selenium-webdriver": "^2.46.1"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "body-parser": "^1.13.2",
+    "express": "^4.13.1",
+    "express3-handlebars": "^0.5.2"
+  }
 }

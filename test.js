@@ -112,7 +112,7 @@ test.describe('Google Search', function() {
   });
 
   test.after(function () {
-    driver.quit();    
+    driver.quit();
   });
 
   test.beforeEach(tryAsyn);
@@ -160,5 +160,5 @@ test.describe('Google Search', function() {
       console.log('Current page title: ' + title);
     });
 
-  });  
+  });
 });
