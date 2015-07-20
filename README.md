@@ -14,3 +14,4 @@
 ### Further Reading
 - [How To Use Mocha With Node.js ...] (http://webapplog.com/tdd/)
 - [The Difference Between TDD and BDD] (https://joshldavis.com/2013/05/27/difference-between-tdd-and-bdd/)
+- [阿唷!! 有中文的捏] (http://teddy-chen-tw.blogspot.tw/2014/09/bddtdd.html)
