@@ -14,50 +14,14 @@
   }
 </style>
 
-<div class="hide">
-  <span id="action">
-    {{!-- findElement --}}
-    <label>
-     <span>
-       findElement: <input type="text" name="findElement" placeholder="Enter an Element" />
-     </span>
-    </label>
-    
-    {{!-- By --}}
-    <label>
-     <span>
-       by: 
-       <select name="by">
-         <option value="className">className</option>
-         <option value="css">css</option>
-         <option value="id">id</option>
-         <option value="name">name</option>
-       </select>
-     </span>
-    </label>
-    
-    {{!-- select actions --}}
-    <label>
-     <span>
-       actions:
-       <select name="action">
-         <option>Selcet a action</option>
-         <option value="click">click</option>
-         <option value="sendKeys">sendKeys</option>
-       </select>
-     </span>
-    </label>
-    <a id="it_add" href="#">Add</a>
-  </span>
-
-  <span id="check">
-    
-  </span>
-</div>
 
 <h1>Create task page</h1>
 <hr/>
 <form action="/create_task" method="POST" id="task_form">
+  <div class="hide">
+    {{> action}}
+    {{> check}}
+  </div>
   <h2>Basic info</h2>
   <hr/>
   <div id="basic_info">
@@ -109,39 +73,8 @@
           </select>
         </label>
 
-        <span>
-          {{!-- findElement --}}
-          <label>
-           <span>
-             findElement: <input type="text" name="findElement" placeholder="Enter an Element" />
-           </span>
-          </label>
-
-          {{!-- By --}}
-          <label>
-           <span>
-             by: 
-             <select name="by">
-               <option value="className">className</option>
-               <option value="css">css</option>
-               <option value="id">id</option>
-               <option value="name">name</option>
-             </select>
-           </span>
-          </label>
-
-          {{!-- select actions --}}
-          <label>
-           <span>
-             actions:
-             <select name="action">
-               <option>Selcet a action</option>
-               <option value="click">click</option>
-               <option value="sendKeys">sendKeys</option>
-             </select>
-           </span>
-          </label>
-          <a id="it_add" href="#">Add</a>
+        <span id="type_content">
+          {{> action}}
         </span>
       </p>
       <hr/>
@@ -164,12 +97,16 @@
           describe:   $task_form.find('#describe'),
           url:        $task_form.find('#url'),
           lang:       $task_form.find('#lang'),
+          hide:       $task_form.find('.hide'),
+          type_con:   $task_form.find('#type_content'),
           add:        $task_form.find('#add'),
           steps:      $task_form.find('#create_step'),
           it_add:     $task_form.find('#it_add'),
           it_content: $task_form.find('.it_content')
         },
         cache_step = $obj.steps.html(),
+        cache_action = $obj.hide.find('#action'),
+        cache_check = $obj.hide.find('#check'),
     disableBtn = function () {
       $obj.btn.prop('disabled', true).val('Created');
     },
@@ -207,7 +144,12 @@
 
     });
     $obj.it_content.on('change', '[name="type"]', function () {
-      console.log($(this).val());
+      var val = $(this).val();
+      if (val === 'action') {
+        $obj.type_con.html(cache_action);
+      } else {
+        $obj.type_con.html(cache_check);
+      }
     });
   });
 </script>

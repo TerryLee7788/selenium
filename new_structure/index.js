@@ -35,6 +35,7 @@ app.all('/', function (req, res) {
 
 app.all('/success', function (req, res) {
   var check = true;
+
   for (var i in req.body) {
     if (req.body[i] === '') {
       check = false;

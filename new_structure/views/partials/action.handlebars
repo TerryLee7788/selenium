@@ -1,0 +1,34 @@
+<span id="action">
+  {{!-- findElement --}}
+  <label>
+    <span>
+      findElement: <input type="text" name="findElement" placeholder="Enter an Element" />
+    </span>
+  </label>
+
+  {{!-- By --}}
+  <label>
+    <span>
+      by: 
+      <select name="by">
+        <option value="className">className</option>
+        <option value="css">css</option>
+        <option value="id">id</option>
+        <option value="name">name</option>
+      </select>
+    </span>
+  </label>
+
+  {{!-- select actions --}}
+  <label>
+    <span>
+      actions:
+      <select name="action">
+        <option>Selcet a action</option>
+        <option value="click">click</option>
+        <option value="sendKeys">sendKeys</option>
+      </select>
+    </span>
+  </label>
+  <a id="it_add" href="#">Add</a>
+</span>
