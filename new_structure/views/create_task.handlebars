@@ -1,0 +1,213 @@
+<style>
+  .it_content {
+    position: relative;
+  }
+  .delete {
+    float: right;
+    line-height: 53px;
+  }
+  .it_content:first-child .delete {
+    display: none;
+  }
+  .hide {
+    display: none;
+  }
+</style>
+
+<div class="hide">
+  <span id="action">
+    {{!-- findElement --}}
+    <label>
+     <span>
+       findElement: <input type="text" name="findElement" placeholder="Enter an Element" />
+     </span>
+    </label>
+    
+    {{!-- By --}}
+    <label>
+     <span>
+       by: 
+       <select name="by">
+         <option value="className">className</option>
+         <option value="css">css</option>
+         <option value="id">id</option>
+         <option value="name">name</option>
+       </select>
+     </span>
+    </label>
+    
+    {{!-- select actions --}}
+    <label>
+     <span>
+       actions:
+       <select name="action">
+         <option>Selcet a action</option>
+         <option value="click">click</option>
+         <option value="sendKeys">sendKeys</option>
+       </select>
+     </span>
+    </label>
+    <a id="it_add" href="#">Add</a>
+  </span>
+
+  <span id="check">
+    
+  </span>
+</div>
+
+<h1>Create task page</h1>
+<hr/>
+<form action="/create_task" method="POST" id="task_form">
+  <h2>Basic info</h2>
+  <hr/>
+  <div id="basic_info">
+    {{!-- describe main task --}}
+    <p>
+      <label for="describe">describe main task:
+        <input id="describe" type="text" name="describe" />
+      </label>
+    </p>
+
+    {{!-- the url --}}
+    <p>
+      <label for="url">The url:
+        <input id="url" type="text" name="url" />
+      </label>
+    </p>
+
+    {{!-- The language --}}
+    <p>
+      <label for="lang">The language:
+        <input id="lang" type="text" name="lang" />
+      </label>
+    </p>
+
+    <hr/>
+  </div>
+
+  <h2>Create Steps</h2>
+  <hr/>
+  <div id="create_step">
+    {{!-- Basic step --}}
+    <div class="it_content">
+      <a class="delete" href="#">Delete</a>
+
+      {{!-- describe it task --}}
+      <p>
+        <label>
+          describe it task: <input type="text" name="it_name" />
+        </label>
+      </p>
+
+      <p>
+
+        <label>
+          type:
+          <select name="type">
+            <option value="action">action</option>
+            <option value="check">check</option>
+          </select>
+        </label>
+
+        <span>
+          {{!-- findElement --}}
+          <label>
+           <span>
+             findElement: <input type="text" name="findElement" placeholder="Enter an Element" />
+           </span>
+          </label>
+
+          {{!-- By --}}
+          <label>
+           <span>
+             by: 
+             <select name="by">
+               <option value="className">className</option>
+               <option value="css">css</option>
+               <option value="id">id</option>
+               <option value="name">name</option>
+             </select>
+           </span>
+          </label>
+
+          {{!-- select actions --}}
+          <label>
+           <span>
+             actions:
+             <select name="action">
+               <option>Selcet a action</option>
+               <option value="click">click</option>
+               <option value="sendKeys">sendKeys</option>
+             </select>
+           </span>
+          </label>
+          <a id="it_add" href="#">Add</a>
+        </span>
+      </p>
+      <hr/>
+    </div>
+  </div>
+
+  <p>
+    <a id="add" href="#">Add Steps</a>
+  </p>
+
+  <input id="btn" type="submit" value="Create task" />
+</form>
+
+<script>
+  $(function () {
+    var tasks = tasks || {},
+        $task_form = $('#task_form'),
+        $obj = {
+          btn:        $task_form.find('#btn'),
+          describe:   $task_form.find('#describe'),
+          url:        $task_form.find('#url'),
+          lang:       $task_form.find('#lang'),
+          add:        $task_form.find('#add'),
+          steps:      $task_form.find('#create_step'),
+          it_add:     $task_form.find('#it_add'),
+          it_content: $task_form.find('.it_content')
+        },
+        cache_step = $obj.steps.html(),
+    disableBtn = function () {
+      $obj.btn.prop('disabled', true).val('Created');
+    },
+    createTask = function (e) {
+      e.preventDefault();
+      tasks.config.data = {
+        url:      $obj.url.val(),
+        describe: $obj.describe.val(),
+        lang:     $obj.lang.val()
+      };
+      $.ajax({
+        type: 'post',
+        url: '/success',
+        dataType: 'html',
+        data: tasks.config.data,
+        success: disableBtn
+      });
+    },
+    addSteps = function (e) {
+      e.preventDefault();
+      $obj.steps.append(cache_step);
+    },
+    deleteStep = function (e) {
+      e.preventDefault();
+      $(this).parents('.it_content').remove();
+    };
+    tasks.config = {};
+    tasks.config.it = [];
+
+    $obj.btn.on('click', createTask);
+    $obj.add.on('click', addSteps);
+    $obj.steps.on('click', '.delete', deleteStep);
+
+    $obj.steps.on('click', '#it_add', function () {
+
+    });
+    $obj.it_content.on('change', '[name="type"]', function () {
+      console.log($(this).val());
+    });
+  });
+</script>

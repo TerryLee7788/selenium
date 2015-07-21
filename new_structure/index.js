@@ -1,15 +1,12 @@
-var express = require('express'),
+var express    = require('express'),
     bodyParser = require('body-parser'),
-    fs = require('fs'),
-    hb = require('express3-handlebars'),
+    fs         = require('fs'),
+    hb         = require('express3-handlebars'),
     handlebars = hb.create({ defaultLayout: 'main'}),
     app = express();
 
 app.set('port', process.env.PORT || 3000);
-// for (var i in hb) {
-//   console.log(i + ': ' +hb[i]);
-// }
-// console.log(new hb.ExpressHandlebars().handlebars.compile);
+
 // set template engine
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
@@ -33,33 +30,43 @@ function renderToString (source, data) {
 
 // set routes
 app.all('/', function (req, res) {
-  // res.send('Hello');
-  // console.log(req.body);
-  var json = (Object.keys(req.body).length) ? ({ data: req.body }) : ('');
+  res.render('index');
+});
+
+app.all('/success', function (req, res) {
+  var check = true;
   for (var i in req.body) {
     if (req.body[i] === '') {
-      req.body = '';
-      json = { data: req.body };
+      check = false;
+      break;
     }
   }
-  if (Object.keys(req.body).length) {
-    var str = '',
-        code = '';
-    fs.readFile('./views/layouts/main_js.handlebars', function (err, data) {
+  console.log('check req.body: ' + check);
+
+  if (Object.keys(req.body).length && check) {
+    fs.readFile('./views/layouts/basic_task.handlebars', function (err, data) {
       if (err) { return console.log(err); }
-      var source = data.toString();
-      code = renderToString(source, req.body);
+      var source = data.toString(),
+          code = renderToString(source, req.body);
 
       fs.writeFile('./js_tmp/test.js', code, function (err) {
         if (err) { return console.log(err); }
       });
     });
   }
-  res.render('index', json);
+  res.render('success');
 });
 
-app.get('/about', function (req, res) {
-  res.render('about');
+app.all('/load_task', function (req, res) {
+  res.render('load_task');
+});
+
+app.all('/edit_task', function (req, res) {
+  res.render('edit_task');
+});
+
+app.all('/create_task', function (req, res) {
+  res.render('create_task');
 });
 
 app.use(function (req, res) {

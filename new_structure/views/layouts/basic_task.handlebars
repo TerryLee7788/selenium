@@ -1,14 +1,14 @@
 var lib_list = require('../../lib/basic_libs').lib(global);
 
-test.describe('Terry test', function() {
-  var url = 'http://google.com',
-      lang = '?lang=',
+test.describe('{{describe}}', function() {
+  var url = '{{url}}',
+      lang = '?lang={{lang}}',
       driver,
 
   tryAsyn = function (done) {
     var timer = 2000,
         second = (timer / 1000);
-    console.log('Terry test test will start after ' + second + ((second >= 10) ? (' seconds') : (' second')) );
+    console.log('{{describe}} test will start after ' + second + ((second >= 10) ? (' seconds') : (' second')) );
     
     // if a function is asyn, simply accept a callback argument
     setTimeout(done, timer);
@@ -37,7 +37,7 @@ test.describe('Terry test', function() {
   test.beforeEach(tryAsyn);
 
   test.afterEach(function () {
-    console.log('Terry test test end');
+    console.log('{{describe}} test end');
   });
 
   test.it('Try to open google web', function() {
