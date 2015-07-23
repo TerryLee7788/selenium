@@ -6,9 +6,7 @@
     float: right;
     line-height: 53px;
   }
-  .it_content:first-child .delete {
-    display: none;
-  }
+  .it_content:first-child .delete,
   .hide {
     display: none;
   }
@@ -64,7 +62,6 @@
       </p>
 
       <p>
-
         <label>
           type:
           <select name="type">
@@ -143,13 +140,13 @@
     $obj.steps.on('click', '#it_add', function () {
 
     });
-    $obj.it_content.on('change', '[name="type"]', function () {
-      var val = $(this).val();
-      if (val === 'action') {
-        $obj.type_con.html(cache_action);
-      } else {
-        $obj.type_con.html(cache_check);
-      }
+    $obj.steps.on('change', '[name="type"]', function () {
+      var $this = $(this),
+          val = $this.val(),
+          $type_content = $this.parent();
+
+      console.log($type_content);
+
     });
   });
 </script>

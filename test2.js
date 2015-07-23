@@ -41,46 +41,6 @@ fs.readFile(__dirname + '/package.json', 'utf8', function (err, file) {
 });
 
 test.describe('Google Search - Test Tasks', function() {
-  var url = 'http://www.google.com/',
-      driver, action,
-  openBrowser = function () {
-    driver = new webdriver.Builder().
-              forBrowser('chrome').
-              build();
-    // action = new webdriver.ActionSequence(driver);
-  },
-  closeBrowser = function () {
-    driver.close();
-  },  
-  tryAsyn = function (done) {
-    var timer = 1500,
-        second = (timer / 1000);
-    // console.log('"Google Search" test will start after ' + second + ((second >= 10) ? (' seconds') : (' second')) );
-    /****
-     * 
-     * To make a test asynchronous,
-     * the test function should accept a callback function.
-     * Also, The "done" callback function also accepts an error as the first argument,
-     * which means that instead of throwing an error.
-     * 
-     * Example: 
-     *
-     *   it('Test something', function (done) {
-     *     doSomethingAsyn(function (err) {
-     *       done(err);
-     *     });
-     *   });
-     * 
-     ****/
-    
-    // if a function is asyn, simply accept a callback argument
-    setTimeout(done, timer);
-    // Test will started after 10s
-  },
-  checkTitle = function (title) {
-    return until.titleContains(title);
-  };
-
   /* 
    * specify the timeout on the test
    * or you can just ("mocha test.js --timeout 15000" / "mocha test.js -t 15000")
@@ -101,6 +61,17 @@ test.describe('Google Search - Test Tasks', function() {
 
     test.beforeEach(function () {
       i++;
+
+      var google_obj = {
+        url: 'http://www.google.com/',
+        field: 'q',
+        keyword: 'webdriver',
+        btn: 'btnK'
+      };
+
+      // Setup the basic data for the "search" function
+      setUp(this, google_obj);
+
       console.log('Start Test 1-1, Step ' + i);
     });
 
@@ -122,37 +93,23 @@ test.describe('Google Search - Test Tasks', function() {
     });
 
     // Step 2
-    test.it('Set browser full screen', function () {
-      // set full screen
-      driver.manage().window().maximize();      
-    });
+    test.it('Set browser full screen', fullScreen);
 
     // Step 3
-    test.it('Enter "'+ url +'" url', function () {
-      // Go the "url" page
-      driver.get(url);
-    });
+    test.it('Enter "'+ this.url +'" url', sendUrl);
 
     // Step 4
     test.it('Show Current browser width', function() {
       var js;
       // Run my js code
       js = 'return document.documentElement.clientWidth';
-      driver.executeScript(js).then(function (val) {
+      this.driver.executeScript(js).then(function (val) {
         console.log('Current window width: ' + val + 'px');
       });
     });
 
-    // send "esc" key
-    // action.sendKeys(Key.ESCAPE).perform();
-
     // Step 5
-    test.it('Send for "webdriver" on search field', function () {
-      // try to checking things
-      driver.findElement(By.name('q')).sendKeys(['webdriver' + Key.ESCAPE]);
-      // The "click" means "mouse click"
-      driver.findElement(By.name('btnK')).click();
-    });
+    test.it('Send for "webdriver" on search field', search);
 
     // var name = 'Terry';
     // use assert, change the assert message
@@ -160,8 +117,8 @@ test.describe('Google Search - Test Tasks', function() {
 
     // Step 6
     test.it('Check Current page title', function () {
-      driver.wait(checkTitle('webdriver'), 5000, 'checking title end.');
-      driver.getTitle().then(function (title) {
+      this.driver.wait(checkTitle(this.keyword), 5000, 'checking title end.');
+      this.driver.getTitle().then(function (title) {
         console.log('Current page title: ' + title);
       });
     });
@@ -175,27 +132,35 @@ test.describe('Google Search - Test Tasks', function() {
 
     test.after(closeBrowser);
 
-    // Step 1
-    test.it('Set browser full screen', function () {
-      // set full screen
-      driver.manage().window().maximize();
+    test.beforeEach(function () {
+      var yahoo_obj = {
+        url: 'http://www.yahoo.com.tw',
+        field: 'p',
+        keyword: 'Fackbook'
+      };
+
+      // Setup the basic data for the "search" function
+      setUp(this, yahoo_obj);
     });
 
+    // Step 1
+    test.it('Set browser full screen', fullScreen);
+
     // Step 2
-    test.it('Enter "'+ url +'" url', function () {
-      // Go the "url" page
-      driver.get(url);
-    });
+    test.it('Enter "'+ url +'" url', sendUrl);
 
     // Step 3
     test.it('Show Current browser width', function() {
       var js;
       // Run my js code
       js = 'return document.documentElement.clientWidth';
-      driver.executeScript(js).then(function (val) {
+      this.driver.executeScript(js).then(function (val) {
         console.log('Current window width: ' + val + 'px');
       });
     });
+
+    // Step 4
+    // test.it('Seach things', search);
   });
 
 });
