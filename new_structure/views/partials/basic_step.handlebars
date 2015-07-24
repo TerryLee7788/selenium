@@ -1,0 +1,26 @@
+    {{!-- Basic step --}}
+    <div class="it_content">
+      <a class="delete" href="#">Delete</a>
+
+      {{!-- describe it task --}}
+      <p>
+        <label>
+          describe it task: <input type="text" name="it_name" />
+        </label>
+      </p>
+
+      <p class="cool">
+        <label>
+          type:
+          <select name="type">
+            <option value="action">action</option>
+            <option value="check">check</option>
+          </select>
+        </label>
+
+        <span class="type_content">
+          {{> action}}
+        </span>
+      </p>
+      <hr/>
+    </div>

@@ -49,33 +49,10 @@
 
   <h2>Create Steps</h2>
   <hr/>
+
   <div id="create_step">
     {{!-- Basic step --}}
-    <div class="it_content">
-      <a class="delete" href="#">Delete</a>
-
-      {{!-- describe it task --}}
-      <p>
-        <label>
-          describe it task: <input type="text" name="it_name" />
-        </label>
-      </p>
-
-      <p>
-        <label>
-          type:
-          <select name="type">
-            <option value="action">action</option>
-            <option value="check">check</option>
-          </select>
-        </label>
-
-        <span id="type_content">
-          {{> action}}
-        </span>
-      </p>
-      <hr/>
-    </div>
+    {{> basic_step}}
   </div>
 
   <p>
@@ -95,7 +72,7 @@
           url:        $task_form.find('#url'),
           lang:       $task_form.find('#lang'),
           hide:       $task_form.find('.hide'),
-          type_con:   $task_form.find('#type_content'),
+          type_con:   $task_form.find('.type_content'),
           add:        $task_form.find('#add'),
           steps:      $task_form.find('#create_step'),
           it_add:     $task_form.find('#it_add'),
@@ -137,16 +114,16 @@
     $obj.add.on('click', addSteps);
     $obj.steps.on('click', '.delete', deleteStep);
 
-    $obj.steps.on('click', '#it_add', function () {
-
-    });
     $obj.steps.on('change', '[name="type"]', function () {
       var $this = $(this),
           val = $this.val(),
-          $type_content = $this.parent();
+          $type_content = $this.parents('p.cool').find('.type_content');
 
-      console.log($type_content);
-
+      if (val === 'action') {
+        $type_content.html(cache_action);
+      } else {
+        $type_content.html(cache_check);
+      }
     });
   });
 </script>
