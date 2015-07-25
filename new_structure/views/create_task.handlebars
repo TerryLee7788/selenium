@@ -79,8 +79,8 @@
           it_content: $task_form.find('.it_content')
         },
         cache_step = $obj.steps.html(),
-        cache_action = $obj.hide.find('#action'),
-        cache_check = $obj.hide.find('#check'),
+        cache_action = $obj.hide.find('#action').html(),
+        cache_check = $obj.hide.find('#check').html(),
     disableBtn = function () {
       $obj.btn.prop('disabled', true).val('Created');
     },
@@ -114,10 +114,10 @@
     $obj.add.on('click', addSteps);
     $obj.steps.on('click', '.delete', deleteStep);
 
-    $obj.steps.on('change', '[name="type"]', function () {
+    $obj.steps.on('change', '[name="type"]', function (e) {
       var $this = $(this),
           val = $this.val(),
-          $type_content = $this.parents('p.cool').find('.type_content');
+          $type_content = $this.parent('label').next('.type_content');
 
       if (val === 'action') {
         $type_content.html(cache_action);
