@@ -33,8 +33,9 @@ app.all('/', function (req, res) {
   res.render('index');
 });
 
-app.all('/success', function (req, res) {
+app.all('/create_task.api', function (req, res) {
   var check = true;
+  req.accepts(['html', 'json']);
 
   for (var i in req.body) {
     if (req.body[i] === '') {
@@ -42,7 +43,13 @@ app.all('/success', function (req, res) {
       break;
     }
   }
-  console.log('check req.body: ' + check);
+  if (!check) {
+    res.json({
+      error: true,
+      message: 'There are some fields are empty'
+    });
+    return ;
+  }
 
   if (Object.keys(req.body).length && check) {
     fs.readFile('./views/layouts/basic_task.handlebars', function (err, data) {
@@ -55,7 +62,10 @@ app.all('/success', function (req, res) {
       });
     });
   }
-  res.render('success');
+  res.json({
+    success: true,
+    message: 'Cool! Done!!!'
+  });
 });
 
 app.all('/load_task', function (req, res) {

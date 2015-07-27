@@ -1,4 +1,4 @@
-<span id="action">
+<span class="action">
   {{!-- findElement --}}
   <label>
     <span>
@@ -11,6 +11,7 @@
     <span>
       by: 
       <select name="by">
+        <option value="">Select by</option>
         <option value="className">className</option>
         <option value="css">css</option>
         <option value="id">id</option>
@@ -24,12 +25,16 @@
     <span>
       actions:
       <select name="action">
-        <option>Selcet a action</option>
+        <option>Selcet action</option>
         <option value="click">click</option>
         <option value="sendKeys">sendKeys</option>
         <option value="clear">clear</option>
       </select>
+      <input type="text" name="sendKeys" data-name="sendKeys" class="hide" />
     </span>
   </label>
-  <a id="it_add" href="#">Add</a>
+
+  {{!-- add or delete btn --}}
+  <a data-name="add" href="#">Add</a>
+  <a data-name="delete" href="#">Delete</a>
 </span>

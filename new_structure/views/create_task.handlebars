@@ -7,19 +7,34 @@
     line-height: 53px;
   }
   .it_content:first-child .delete,
+  .lists-content [data-name="lists"]:first-child [data-name="delete"],
   .hide {
     display: none;
+  }
+  [data-name="add"] {
+    margin: 0 10px;
+  }
+  #error-msg {
+    color: red;
+    margin: 10px 0;
+    display: none;
+  }
+  #test_account {
+    vertical-align: middle;
+  }
+  #test_account:checked + #account-content {
+    display: block;
   }
 </style>
 
 
 <h1>Create task page</h1>
 <hr/>
+<div id="hide" class="hide">
+  {{> action}}
+  {{> check}}
+</div>
 <form action="/create_task" method="POST" id="task_form">
-  <div class="hide">
-    {{> action}}
-    {{> check}}
-  </div>
   <h2>Basic info</h2>
   <hr/>
   <div id="basic_info">
@@ -39,14 +54,33 @@
 
     {{!-- The language --}}
     <p>
-      <label for="lang">The language:
+      <label for="lang">
+        The language:
         <input id="lang" type="text" name="lang" />
       </label>
     </p>
 
-    <hr/>
+    {{!-- Test account and password --}}
+
+      <label>
+        Do you use test account?
+        <input type="checkbox" id="test_account" />
+
+        <p id="account-content" class="hide">
+           <label>
+             User name
+             <input type="text" name="user"/>
+           </label>
+           <label>
+             Password
+             <input type="password" name="password" />
+           </label>
+        </p>
+      </label>
+
   </div>
 
+  <hr/>
   <h2>Create Steps</h2>
   <hr/>
 
@@ -61,40 +95,62 @@
 
   <input id="btn" type="submit" value="Create task" />
 </form>
+<div id="error-msg"></div>
 
 <script>
   $(function () {
     var tasks = tasks || {},
         $task_form = $('#task_form'),
+        $hide = $('#hide'),
+        $msg = $('#error-msg'),
         $obj = {
-          btn:        $task_form.find('#btn'),
-          describe:   $task_form.find('#describe'),
-          url:        $task_form.find('#url'),
-          lang:       $task_form.find('#lang'),
-          hide:       $task_form.find('.hide'),
-          type_con:   $task_form.find('.type_content'),
-          add:        $task_form.find('#add'),
-          steps:      $task_form.find('#create_step'),
-          it_add:     $task_form.find('#it_add'),
-          it_content: $task_form.find('.it_content')
+          btn:       $task_form.find('#btn'),
+          describe:  $task_form.find('#describe'),
+          url:       $task_form.find('#url'),
+          lang:      $task_form.find('#lang'),
+          add:       $task_form.find('#add'),
+          account:   $task_form.find('#test_account'),
+          steps:     $task_form.find('#create_step')
         },
+        lock_ajax = false,
         cache_step = $obj.steps.html(),
-        cache_action = $obj.hide.find('#action').html(),
-        cache_check = $obj.hide.find('#check').html(),
-    disableBtn = function () {
-      $obj.btn.prop('disabled', true).val('Created');
+        cache_action = $hide.find('.action').html(),
+        cache_check = $hide.find('.check').html(),
+        cache_list = $obj.steps.find('.lists-content').html(),
+    disableBtn = function (data) {
+      if (data.success) {
+        $obj.btn.val('Created');
+        $msg.text(data.message);
+      } else {
+        $msg.text(data.message).fadeIn(1500, function () {
+          $obj.btn.prop('disabled', true);
+        }).delay(3000).fadeOut(1500, function () {
+          $obj.btn.prop('disabled', false);
+          lock_ajax = false;
+        });
+      }
     },
     createTask = function (e) {
       e.preventDefault();
+      // disabled the btn
+      $obj.btn.prop('disabled', true);
+
+      // lock the ajax function
+      if (lock_ajax) { return; }
+      lock_ajax = true;
+
+      // setup the config object
       tasks.config.data = {
         url:      $obj.url.val(),
         describe: $obj.describe.val(),
         lang:     $obj.lang.val()
       };
+
+      // send ajax
       $.ajax({
         type: 'post',
-        url: '/success',
-        dataType: 'html',
+        url: '/create_task.api',
+        dataType: 'json',
         data: tasks.config.data,
         success: disableBtn
       });
@@ -106,15 +162,8 @@
     deleteStep = function (e) {
       e.preventDefault();
       $(this).parents('.it_content').remove();
-    };
-    tasks.config = {};
-    tasks.config.it = [];
-
-    $obj.btn.on('click', createTask);
-    $obj.add.on('click', addSteps);
-    $obj.steps.on('click', '.delete', deleteStep);
-
-    $obj.steps.on('change', '[name="type"]', function (e) {
+    },
+    typeOnChange = function () {
       var $this = $(this),
           val = $this.val(),
           $type_content = $this.parent('label').next('.type_content');
@@ -124,6 +173,52 @@
       } else {
         $type_content.html(cache_check);
       }
-    });
+    },
+    addOrDeleteList = function (e) {
+      e.preventDefault();
+      var $this = $(this),
+          $content = $this.parents('.lists-content'),
+          $lists = $this.parents('[data-name="lists"]'),
+          data_action = $this.data('name');
+
+      if (data_action === 'add') {
+        $content.append(cache_list);
+      } else {
+        $lists.remove();
+      }
+    },
+    sendKeys = function () {
+      var $this = $(this),
+          $sendKeys = $this.next('[data-name="sendKeys"]'),
+          action_val = $this.val();
+      if (action_val === 'sendKeys') {
+        $sendKeys.show();
+      } else {
+        $sendKeys.hide().val('');
+      }
+    },
+    accountOnChange = function () {
+      // reset account value
+      if (!$(this).prop("checked")) {
+        $('#account-content').find('input').each(function (idx, tar) {
+          $(tar).val('');
+        });
+      }
+    };
+
+    // Main object
+    tasks.config = {};
+    tasks.config.it = [];
+
+    // Click event
+    $obj.btn.on('click', createTask);
+    $obj.add.on('click', addSteps);
+    $obj.steps.on('click', '.delete', deleteStep);
+    $obj.steps.on('click', '.type_content [data-name="add"], .type_content [data-name="delete"]', addOrDeleteList);
+
+    // Change event
+    $obj.account.on('change', accountOnChange);
+    $obj.steps.on('change', '[name="type"]', typeOnChange);
+    $obj.steps.on('change', '[name="action"]', sendKeys);
   });
 </script>

@@ -9,18 +9,20 @@
         </label>
       </p>
 
-      <p class="cool">
-        <label>
-          type:
-          <select name="type">
-            <option value="action">action</option>
-            <option value="check">check</option>
-          </select>
-        </label>
-
-        <span class="type_content">
-          {{> action}}
-        </span>
-      </p>
+      <div class="lists-content">
+        <p data-name="lists">
+          <label>
+            type:
+            <select name="type">
+              <option value="action">action</option>
+              <option value="check">check</option>
+            </select>
+          </label>
+        
+          <span class="type_content">
+            {{> action}}
+          </span>
+        </p>
+      </div>
       <hr/>
     </div>
