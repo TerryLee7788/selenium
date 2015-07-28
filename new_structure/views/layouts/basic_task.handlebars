@@ -53,6 +53,7 @@ test.describe('{{describe}}', function() {
     
     // The "click" means "mouse click"
     driver.findElement(By.name('btnK')).click();
+    
     driver.wait(checkTitle('webdriver'), 5000, 'checking title end.');
     driver.getTitle().then(function (title) {
       console.log('Current page title: ' + title);

@@ -4,21 +4,41 @@
   <meta charset="UTF-8">
   <title>Main Page</title>
   <link rel="stylesheet" href="./dist/css/bootstrap.css">
+  <link rel="stylesheet" href="./dist/css/navbar-fixed_header.css">
+  {{{_sections.style}}}
   <script src="./lib/jquery-1.11.3.min.js"></script>
+  <script src="./dist/js/bootstrap.min.js"></script>
 </head>
 <body>
-  <header>
-    <nav>
-      <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/create_task">Create task</a></li>
-        <li><a href="/edit_task">Edit task</a></li>
-        <li><a href="/load_task">Load task</a></li>
-      </ul>
-    </nav>
-  </header>
 
-  {{{body}}}
-  
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/">Selenium tesk creator</a>
+      </div>
+
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+          {{!-- <li><a href="/">Home</a></li> --}}
+          <li><a href="/create_task">Create task</a></li>
+          <li><a href="/edit_task">Edit task</a></li>
+          <li><a href="/load_task">Load task</a></li>
+        </ul>
+      </div>
+
+    </div>{{!-- container end --}}
+  </nav>
+
+  <div class="container">
+    {{{body}}}
+  </div>
+
+  {{{_sections.jquery}}}
 </body>
 </html>

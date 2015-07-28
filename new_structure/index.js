@@ -2,7 +2,16 @@ var express    = require('express'),
     bodyParser = require('body-parser'),
     fs         = require('fs'),
     hb         = require('express3-handlebars'),
-    handlebars = hb.create({ defaultLayout: 'main'}),
+    handlebars = hb.create({
+      defaultLayout: 'main',
+      helpers: {
+        section: function (name, options) {
+          if(!this._sections) { this._sections = {}; }
+          this._sections[name] = options.fn(this);
+          return null;
+        }
+      }
+    }),
     app = express();
 
 app.set('port', process.env.PORT || 3000);
@@ -23,8 +32,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 function renderToString (source, data) {
-  var template = new hb.ExpressHandlebars().handlebars.compile(source),
-      out_put = template(data);
+  var json = {
+        data: data
+      },
+      template = new hb.ExpressHandlebars().handlebars.compile(source),
+      out_put = template(json);
   return  out_put;
 }
 
