@@ -53,77 +53,77 @@ test.describe('Google Search - Test Tasks', function() {
     // console.log('end');
   });
 
-  test.describe('Test Tasks 1-1, search for "webdriver"', function () {
-    var i = 0;
-    test.before(openBrowser);
+  // test.describe('Test Tasks 1-1, search for "webdriver"', function () {
+  //   var i = 0;
+  //   test.before(openBrowser);
 
-    test.after(closeBrowser);
+  //   test.after(closeBrowser);
 
-    test.beforeEach(function () {
-      i++;
+  //   test.beforeEach(function () {
+  //     i++;
 
-      var google_obj = {
-        url: 'http://www.google.com/',
-        field: 'q',
-        keyword: 'webdriver',
-        btn: 'btnK'
-      };
+  //     var google_obj = {
+  //       url: 'http://www.google.com/',
+  //       field: 'q',
+  //       keyword: 'webdriver',
+  //       btn: 'btnK'
+  //     };
 
-      // Setup the basic data for the "search" function
-      setUp(this, google_obj);
+  //     // Setup the basic data for the "search" function
+  //     setUp(this, google_obj);
 
-      console.log('Start Test 1-1, Step ' + i);
-    });
+  //     console.log('Start Test 1-1, Step ' + i);
+  //   });
 
-    test.afterEach(function () {
-      console.log('End Test 1-1, Step ' + i);
-    });
+  //   test.afterEach(function () {
+  //     console.log('End Test 1-1, Step ' + i);
+  //   });
 
-    // Step 1
-    test.it('Open "Chrome" browser', function() {
+  //   // Step 1
+  //   test.it('Open "Chrome" browser', function() {
 
-      // based on node js "EventEmitter"
-      EventEmitter.on('load', function () {
-        console.log('loaded');
-      });
+  //     // based on node js "EventEmitter"
+  //     EventEmitter.on('load', function () {
+  //       console.log('loaded');
+  //     });
 
-      // trigger the load event
-      EventEmitter.emit('load');
+  //     // trigger the load event
+  //     EventEmitter.emit('load');
 
-    });
+  //   });
 
-    // Step 2
-    test.it('Set browser full screen', fullScreen);
+  //   // Step 2
+  //   test.it('Set browser full screen', fullScreen);
 
-    // Step 3
-    test.it('Enter "'+ this.url +'" url', sendUrl);
+  //   // Step 3
+  //   test.it('Enter "'+ this.url +'" url', sendUrl);
 
-    // Step 4
-    test.it('Show Current browser width', function() {
-      var js;
-      // Run my js code
-      js = 'return document.documentElement.clientWidth';
-      this.driver.executeScript(js).then(function (val) {
-        console.log('Current window width: ' + val + 'px');
-      });
-    });
+  //   // Step 4
+  //   test.it('Show Current browser width', function() {
+  //     var js;
+  //     // Run my js code
+  //     js = 'return document.documentElement.clientWidth';
+  //     this.driver.executeScript(js).then(function (val) {
+  //       console.log('Current window width: ' + val + 'px');
+  //     });
+  //   });
 
-    // Step 5
-    test.it('Send for "webdriver" on search field', search);
+  //   // Step 5
+  //   test.it('Send for "webdriver" on search field', basic_actions.search);
 
-    // var name = 'Terry';
-    // use assert, change the assert message
-    // assert.equal(name, 'Terry', 'this name is not equal to "Terry"');
+  //   // var name = 'Terry';
+  //   // use assert, change the assert message
+  //   // assert.equal(name, 'Terry', 'this name is not equal to "Terry"');
 
-    // Step 6
-    test.it('Check Current page title', function () {
-      this.driver.wait(checkTitle(this.keyword), 5000, 'checking title end.');
-      this.driver.getTitle().then(function (title) {
-        console.log('Current page title: ' + title);
-      });
-    });
+  //   // Step 6
+  //   test.it('Check Current page title', function () {
+  //     this.driver.wait(checkTitle(this.keyword), 5000, 'checking title end.');
+  //     this.driver.getTitle().then(function (title) {
+  //       console.log('Current page title: ' + title);
+  //     });
+  //   });
 
-  });
+  // });
 
   test.describe('Test Tasks 1-2, just guide yahoo page', function () {
     var url = 'http://www.yahoo.com.tw';
@@ -135,8 +135,10 @@ test.describe('Google Search - Test Tasks', function() {
     test.beforeEach(function () {
       var yahoo_obj = {
         url: 'http://www.yahoo.com.tw',
-        field: 'p',
-        keyword: 'Fackbook'
+        field: 'UHSearchBox',
+        keyword: 'Fackbook',
+        btn: 'UHSearchWeb',
+        site: 'yahoo'
       };
 
       // Setup the basic data for the "search" function
@@ -160,7 +162,8 @@ test.describe('Google Search - Test Tasks', function() {
     });
 
     // Step 4
-    // test.it('Seach things', search);
+    test.it('Seach things', basic_actions.search);
+    console.log('fn: ' + basic_actions.search);
   });
 
 });
