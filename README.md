@@ -1,7 +1,10 @@
 ### selenium learning
-1. 首先, 先 `npm init` create 出一個 `package.json` 檔案
-2. 接著 `npm install selenium-webdriver --save`
-3. 再來 `npm install chromedrive --save` *此步驟做完可以直接略過 `5, 6` 的步驟*
+### 安裝環境
+[Node js](https://nodejs.org/)
+### Steps
+2. 先 `npm init` create 出一個 `package.json` 檔案
+2. 接著開啟 `node command line tool` 將當前目錄移動(cd)到`selenium` 資料夾底下
+3. 再來 `npm install chromedrive --save`, `npm install selenium-webdriver --save` *此步驟做完可以直接略過 `5, 6` 的步驟*
 4. 安裝 `node package` 的時候, 記得處理好`依賴關係`, 之後要跟進的開發人員直接 `npm install` 即可
 5. 安裝好了之後, 去下載 [chromedriver](http://chromedriver.storage.googleapis.com/index.html)
 6. `chromedriver.exe` 這個檔案放到你的bin 底下, 記得去設定`環境變數`那邊, `PATH` 加入你的`chromedriver.exe`  所在的路徑
