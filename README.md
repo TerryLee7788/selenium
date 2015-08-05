@@ -4,7 +4,7 @@
 ### Steps
 1. 先開啟 `node command line tool`, `mkdir selenium`
 2. 接著將當前目錄移動`(cd)`到 `selenium` 資料夾底下
-2. `npm init` create 出一個 `package.json` 檔案
+2. `npm init` 填入您的資料, 會產出一個 `package.json` 檔案
 3. 安裝 `node package`
 4. `npm install selenium-webdriver --save`
 4. `npm install chromedrive --save` *此步驟做完可以直接略過 `8, 9` 的步驟*
