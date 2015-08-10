@@ -1,6 +1,7 @@
 ### selenium learning
 ### 安裝環境
 [Node js](https://nodejs.org/)
+[mocha](http://mochajs.org/)
 ### Steps
 1. 先開啟 `node command line tool`, `mkdir selenium`
 2. 接著將當前目錄移動`(cd)`到 `selenium` 資料夾底下
