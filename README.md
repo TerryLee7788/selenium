@@ -9,10 +9,9 @@
 3. `npm init` 填入您的資料, 會產出一個 `package.json` 檔案
 4. 安裝 `node package` 的時候, 記得處理好`依賴關係`, 之後要跟進的開發人員直接 `npm install` 即可
 5. `npm install --save selenium-webdriver chromedriver` 
-6. 安裝完 `chromedriver` 之後, 記得去設定`環境變數 > PATH` 加入你的`chromedriver.exe`  所在的路徑
+6. 安裝完 `chromedriver` 之後, 記得去設定`環境變數 > [PATH](https://en.wikipedia.org/wiki/PATH_%28variable%29)` 加入你的`chromedriver.exe`  所在的路徑
 7. 重啟你的 `command line` tool.
-8. 然後就可以用chrome 跑自動測試了!
-9. 可以開始寫 test的 JS code 了!!
+8. 可以開始寫 test的 JS code 了!!
 
 ### Reference doc
 - There is a good tutorial [here] (http://simpleprogrammer.com/2014/02/03/selenium-with-node-js/)
