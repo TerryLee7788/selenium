@@ -4,22 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "mocha test2.js",
+    "start": "jest test2.js",
+    "test": "mocha test2.js",
     "reporter": "mocha test2 --reporter mochawesome"
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "archiver": "^0.14.4",
-    "chromedriver": "^2.16.0",
-    "mochawesome": "^1.2.0",
-    "nodemailer": "^1.4.0",
-    "nodemailer-smtp-transport": "^1.0.3",
-    "selenium-webdriver": "^2.46.1"
-  },
   "devDependencies": {
-    "body-parser": "^1.13.2",
-    "express": "^4.13.1",
-    "express3-handlebars": "^0.5.2"
+    "assert": "^2.0.0",
+    "jest": "^26.4.2",
+    "mocha": "^8.1.1",
+    "selenium-webdriver": "^4.0.0-alpha.7"
+  },
+  "dependencies": {
+    "chai": "^4.2.0"
   }
 }
